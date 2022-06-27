@@ -11,7 +11,7 @@ spec:
     helm:
       releaseName: istio-base
   destination:
-    server: 'in-cluster'
+    name: 'in-cluster'
     namespace: istio-system
   syncPolicy:
     automated:
