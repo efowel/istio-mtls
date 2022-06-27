@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: istio-base
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          cluster: apps
+  template:
+    metadata:
+      name: 'test-istio-base'
+    spec:
+      project: default
+      source:
+        chart: base
+        repoURL: https://istio-release.storage.googleapis.com/charts
+        targetRevision: 1.14.1
+        helm:
+          releaseName: istio-base
+      destination:
+        server: 'in-cluster'
+        namespace: istio-system
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+        - CreateNamespace=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
